@@ -1,0 +1,25 @@
+# from "https://gist.github.com/kgsi/ed2f1c5696a2211c1fd1e1e198c96ee4"
+/Assets/Fonts/japanese_full.txt
+
+# export with "TextMesh Pro" using "Meiryo Bold.ttc"
+/Assets/Fonts/Meiryo Bold SDF (Bordering).asset
+/Assets/Fonts/Meiryo Bold SDF.asset
+
+# from "C:\Windows\Fonts\meiryob.ttc"
+/Assets/Fonts/Meiryo Bold.ttc
+
+# from "https://github.com/gkngkc/UnityStandaloneFileBrowser"
+/Assets/Plugins/StandaloneFileBrowser
+
+# from Unity
+/Assets/Plugins/TextMesh Pro
+
+# from "C:\Program Files\Unity\Hub\Editor\[Unity]\Editor\Data\MonoBleedingEdge\lib\mono\4.5\System.Drawing.dll"
+/Assets/Plugins/System.Drawing.dll
+
+# misc
+/Build
+/Library
+/Logs
+/Temp
+/Release

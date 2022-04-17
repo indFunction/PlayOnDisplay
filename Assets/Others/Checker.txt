@@ -1,0 +1,8 @@
+﻿\s\r\n ---> \r\n
+\r\n\r\n\r\n ---> \r\n\r\n
+,\s <--> /* (colonA) */
+,\r\n <--> /* (colonB) */\r\n
+\s\s\s\s <--> /* (indent) */
+/* (indent) */\s ---> /* (indent) */
+
+If you want to delete the search (replace) history, to delete this file: "C:\Users\User\AppData\Local\Microsoft\VisualStudio\{hash}\privateregistry.bin"

@@ -1,0 +1,19 @@
+{
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true
+    },
+    "editor.defaultFormatter": "ms-dotnettools.csharp",
+    "editor.formatOnSave": true,
+    "cSpell.ignoreWords": [
+        "Behaviour",
+        "Conv",
+        "Lerp",
+        "Mathf",
+        "UGUI",
+        "prettierignore"
+    ],
+    "files.autoGuessEncoding": true,
+    "files.exclude": {
+        "**/*.meta": true
+    }
+}

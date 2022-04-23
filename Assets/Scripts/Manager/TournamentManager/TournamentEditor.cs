@@ -326,16 +326,13 @@ public class TournamentEditor : MonoBehaviour
 
         TournamentProvider.stageRoot[] stageRoots = newTournamentData.stageRoots;
 
+        string inputPlayerColor = UniversalFunction.GetInputFieldText(TournamentProvider.individualTournamentMenuObjects.playerColorInput);
+
+        if (inputPlayerColor.Length % 3 != 0) return;
+
         Color playerColorBuffer;
 
-        if
-        (
-            ColorUtility.TryParseHtmlString
-            (
-                "#" + UniversalFunction.GetInputFieldText(TournamentProvider.individualTournamentMenuObjects.playerColorInput),
-                out playerColorBuffer
-            )
-        )
+        if (ColorUtility.TryParseHtmlString("#" + inputPlayerColor, out playerColorBuffer))
         {
             Color32 playerColor = playerColorBuffer;
 

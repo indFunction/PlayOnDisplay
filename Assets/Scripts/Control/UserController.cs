@@ -83,6 +83,7 @@ public class UserController : MonoBehaviour
         public bool addDisplay = false;
         public bool removeDisplay = false;
         public int moveDisplay = 0;
+        public bool closeApplication = false;
         public bool extendMode = false;
         public bool toggleInterface = false;
     }
@@ -138,6 +139,8 @@ public class UserController : MonoBehaviour
         CommandAddAndRemoveDisplay(isInvalidInput);
 
         CommandMoveAndSwapDisplay(displayTargetNum, isInvalidInput);
+
+        CommandCloseApplication(isInvalidInput);
 
         SetCamera(isInvalidInput);
     }
@@ -400,6 +403,25 @@ public class UserController : MonoBehaviour
         }
     }
 
+    public void CommandCloseApplication(bool isInvalidInput)
+    {
+        if (!isInvalidInput && userOperationManagement.extendMode && userOperationManagement.closeApplication) ReadyCloseApplication();
+    }
+
+    public void ReadyCloseApplication()
+    {
+        Button[] go = NotificationController.SetWarningNotification("ソフトウェアを終了しますか？");
+
+        // Debug.Log("Do you want to close this application?");
+
+        go[0].onClick.AddListener(() => { CloseApplication(); });
+    }
+
+    public void CloseApplication()
+    {
+        Application.Quit();
+    }
+
     public GameObject GetCurrentDisplay()
     {
         return displayObjects[displayTargetNum];
@@ -435,6 +457,7 @@ public class UserController : MonoBehaviour
             userOperationManagement.addDisplay = Keyboard.current.aKey.wasPressedThisFrame;
             userOperationManagement.removeDisplay = Keyboard.current.rKey.wasPressedThisFrame;
             userOperationManagement.moveDisplay = UniversalFunction.ConvBoolToInt(Keyboard.current.rightArrowKey.wasPressedThisFrame) - UniversalFunction.ConvBoolToInt(Keyboard.current.leftArrowKey.wasPressedThisFrame);
+            userOperationManagement.closeApplication = Keyboard.current.qKey.wasPressedThisFrame;
             userOperationManagement.extendMode = Keyboard.current.leftCtrlKey.isPressed;
             userOperationManagement.toggleInterface = Keyboard.current.f1Key.wasPressedThisFrame;
         }
@@ -447,6 +470,7 @@ public class UserController : MonoBehaviour
             userOperationManagement.addDisplay = false;
             userOperationManagement.removeDisplay = false;
             userOperationManagement.moveDisplay = 0;
+            userOperationManagement.closeApplication = false;
             userOperationManagement.extendMode = false;
             userOperationManagement.toggleInterface = false;
         }

@@ -49,7 +49,7 @@ public class UserController : MonoBehaviour
     [Header("Control Config")]
     [SerializeField] private float adjustPointerMovement = 0.005f;
     [SerializeField] private float fixPointerMovement = 0.002f;
-    [SerializeField] private float fixKeyMovement = 0.002f;
+    [SerializeField] private float fixKeyMovement = 0.004f;
     [SerializeField] private float delayPointerMovement = 4f;
     [SerializeField] private float delayCameraZoom = 10f;
     [SerializeField] private float timesCameraZoom = 0.5f;

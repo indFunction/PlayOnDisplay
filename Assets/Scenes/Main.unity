@@ -8515,7 +8515,7 @@ MonoBehaviour:
   updateHideInterface: 0
   adjustPointerMovement: 0.005
   fixPointerMovement: 0.002
-  fixKeyMovement: 0.002
+  fixKeyMovement: 0.004
   delayPointerMovement: 4
   delayCameraZoom: 10
   timesCameraZoom: 0.5

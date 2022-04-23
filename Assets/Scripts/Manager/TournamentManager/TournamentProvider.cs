@@ -257,11 +257,23 @@ public class TournamentProvider : MonoBehaviour
         int sumPlayerIntBuffer = sumPlayerStringBuffer != "" ? int.Parse(sumPlayerStringBuffer) : 50;
         int numGroupIntBuffer = numGroupStringBuffer != "" ? int.Parse(numGroupStringBuffer) : 2;
 
-        if
-        (
-            sumPlayerIntBuffer != UniversalFunction.FixValueRange(sumPlayerIntBuffer, 0, 2, maxSumPlayer) ||
-            numGroupIntBuffer != UniversalFunction.FixValueRange(numGroupIntBuffer, 0, 2, maxSumPlayer)
-        ) return;
+        if (sumPlayerIntBuffer != UniversalFunction.FixValueRange(sumPlayerIntBuffer, 0, 2, maxSumPlayer))
+        {
+            Button[] go = NotificationController.SetErrorNotification("参加人数を1人以下、もしくは" + (maxSumPlayer + 1).ToString() + "人以上にすることはできません！");
+
+            // Debug.Log("The number of players cannot be less than 1 or more than" + (maxSumPlayer + 1).ToString() + "!");
+
+            return;
+        }
+
+        if (numGroupIntBuffer != UniversalFunction.FixValueRange(numGroupIntBuffer, 0, 2, maxSumPlayer))
+        {
+            Button[] go = NotificationController.SetErrorNotification("対戦人数を1人以下、もしくは" + (maxSumPlayer + 1).ToString() + "人以上にすることはできません！");
+
+            // Debug.Log("The number of opponents cannot be less than 1 or more than" + (maxSumPlayer + 1).ToString() + "!");
+
+            return;
+        }
 
         sumPlayer = sumPlayerIntBuffer;
         numGroup = numGroupIntBuffer;
@@ -281,7 +293,7 @@ public class TournamentProvider : MonoBehaviour
                 break;
         }
 
-        if (tournamentData != null)
+        if (loadFileType == 0 || tournamentData != null)
         {
             individualTournamentData = tournamentData;
         }

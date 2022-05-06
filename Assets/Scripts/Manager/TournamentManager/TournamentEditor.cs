@@ -350,6 +350,36 @@ public class TournamentEditor : MonoBehaviour
         }
     }
 
+    public void ResetAllResults()
+    {
+        TournamentProvider.tournamentData newTournamentData = TournamentProvider.individualTournamentData;
+
+        TournamentProvider.stageRoot[] stageRoots = newTournamentData.stageRoots;
+        TournamentProvider.stageCollider[,] stageColliders = newTournamentData.stageColliders;
+        TournamentProvider.stageProperty[] stageProperties = newTournamentData.stageProperties;
+
+        int sumPeople = stageRoots.Length;
+
+        int stageHeight = stageColliders.GetLength(0);
+
+        for (int x = 0; x < sumPeople; x++) stageRoots[x].currentPos = stageRoots[x].startDrawRatioBranchPos;
+
+        for (int y = 0; y < stageHeight; y++)
+        {
+            for (int x = 0; x < stageProperties[y].sumBranch; x++)
+            {
+                if (stageColliders[y, x].type != 1) stageColliders[y, x].winner = -1;
+            }
+        }
+
+        newTournamentData.stageRoots = stageRoots;
+        newTournamentData.stageColliders = stageColliders;
+
+        TournamentProvider.individualTournamentData = newTournamentData;
+
+        TournamentProvider.individualTournamentData.isUpdate = 1;
+    }
+
     public void ShufflePlayer()
     {
         TournamentProvider.tournamentData newTournamentData = TournamentProvider.individualTournamentData;

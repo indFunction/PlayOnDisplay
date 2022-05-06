@@ -464,6 +464,20 @@ public class TournamentProvider : MonoBehaviour
         });
     }
 
+    public void ReadyResetAllResults()
+    {
+        Button[] go = NotificationController.SetWarningNotification("全ての勝敗を初期化しますか？");
+
+        // Debug.Log("Do you want to initialize all results?");
+
+        go[0].onClick.AddListener(() => { ResetAllResults(); });
+    }
+
+    public void ResetAllResults()
+    {
+        TournamentEditor.ResetAllResults();
+    }
+
     public void ReadyShufflePlayer()
     {
         Button[] go = NotificationController.SetWarningNotification("プレイヤーをシャッフルしますか？");

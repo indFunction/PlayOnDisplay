@@ -15,5 +15,6 @@
     "files.autoGuessEncoding": true,
     "files.exclude": {
         "**/*.meta": true
-    }
+    },
+    "editor.codeLens": false
 }

@@ -81,7 +81,7 @@ public class TournamentProvider : MonoBehaviour
 
     public class tournamentData
     {
-        public bool isUpdate = false;
+        public int isUpdate = 0;
         public bool allowWalkover = false;
         public int defaultNumGroup = 0;
         public stageRoot[] stageRoots;
@@ -98,6 +98,11 @@ public class TournamentProvider : MonoBehaviour
         public Vector2 startDrawRatioBranchPos = Vector2.zero;
         public Vector2 endDrawRatioBranchPos = Vector2.zero;
         public Vector2 currentPos = Vector2.zero;
+
+        public stageRoot Clone()
+        {
+            return (stageRoot)MemberwiseClone();
+        }
     }
 
     public class stageCollider
@@ -223,11 +228,27 @@ public class TournamentProvider : MonoBehaviour
 
     void UpdateMainScreen()
     {
-        if (individualTournamentData.isUpdate)
+        if (individualTournamentData.isUpdate != 0)
         {
-            individualTournamentData.isUpdate = false;
+            switch (individualTournamentData.isUpdate)
+            {
+                case 1:
+                    TournamentPainter.UpdateTournament(individualTournamentData, 2, screenSize);
+                    break;
+                case 2:
+                    individualTournamentData = TournamentPainter.GenerareInitialTournament
+                    (
+                        individualTournamentContainerObjects,
+                        individualTournamentOriginalObjects,
+                        individualTournamentData,
+                        false,
+                        screenSize,
+                        this
+                    );
+                    break;
+            }
 
-            TournamentPainter.UpdateTournament(individualTournamentData, 2, screenSize);
+            individualTournamentData.isUpdate = 0;
 
             individualTournamentCounter = GetTournamentCounter(individualTournamentData);
 
@@ -316,7 +337,7 @@ public class TournamentProvider : MonoBehaviour
 
         // Debug.Log(TournamentPainter.DebugTournamentCounter(individualTournamentCounter));
 
-        individualTournamentData.isUpdate = true;
+        individualTournamentData.isUpdate = 2;
 
         selectLayerNum = TournamentPainter.ChangeLayer(individualTournamentLayerObjects, 1, -1);
     }
@@ -441,6 +462,20 @@ public class TournamentProvider : MonoBehaviour
         {
             TournamentWriter.SaveData(individualTournamentData, path);
         });
+    }
+
+    public void ReadyShufflePlayer()
+    {
+        Button[] go = NotificationController.SetWarningNotification("プレイヤーをシャッフルしますか？");
+
+        // Debug.Log("Do you want to shuffle all players?");
+
+        go[0].onClick.AddListener(() => { ShufflePlayer(); });
+    }
+
+    public void ShufflePlayer()
+    {
+        TournamentEditor.ShufflePlayer();
     }
 
     public void ReadyExitGame()

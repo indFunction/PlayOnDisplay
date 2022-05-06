@@ -166,7 +166,7 @@ public class TournamentEditor : MonoBehaviour
 
         TournamentProvider.individualTournamentData = newTournamentData;
 
-        TournamentProvider.individualTournamentData.isUpdate = true;
+        TournamentProvider.individualTournamentData.isUpdate = 1;
     }
 
     public void CancelAction(int id)
@@ -294,7 +294,7 @@ public class TournamentEditor : MonoBehaviour
 
         TournamentProvider.individualTournamentData = newTournamentData;
 
-        TournamentProvider.individualTournamentData.isUpdate = true;
+        TournamentProvider.individualTournamentData.isUpdate = 1;
     }
 
     public void ChangePlayerName(int id)
@@ -317,7 +317,7 @@ public class TournamentEditor : MonoBehaviour
 
         TournamentProvider.individualTournamentData = newTournamentData;
 
-        TournamentProvider.individualTournamentData.isUpdate = true;
+        TournamentProvider.individualTournamentData.isUpdate = 1;
     }
 
     public void ChangePlayerColor(int id)
@@ -346,8 +346,55 @@ public class TournamentEditor : MonoBehaviour
 
             TournamentProvider.individualTournamentData = newTournamentData;
 
-            TournamentProvider.individualTournamentData.isUpdate = true;
+            TournamentProvider.individualTournamentData.isUpdate = 1;
         }
+    }
+
+    public void ShufflePlayer()
+    {
+        TournamentProvider.tournamentData newTournamentData = TournamentProvider.individualTournamentData;
+
+        TournamentProvider.stageRoot[] stageRoots = newTournamentData.stageRoots;
+        TournamentProvider.stageCollider[,] stageColliders = newTournamentData.stageColliders;
+
+        int sumPeople = stageRoots.Length;
+
+        int stageWidth = stageColliders.GetLength(1);
+
+        for (int i = 0; i < stageWidth; i++)
+        {
+            if (stageColliders[0, i].winner != -1)
+            {
+                Button[] dummy = NotificationController.SetErrorNotification("1つ以上の試合の勝敗が確定しているため、プレイヤーをシャッフルすることができません！");
+
+                // Debug.Log("Players cannot be shuffled because one or more matches have been decided!");
+
+                return;
+            }
+        }
+
+        List<TournamentProvider.stageRoot> stageRootList = new List<TournamentProvider.stageRoot>(stageRoots);
+
+        TournamentProvider.stageRoot[] newStageRoots = new TournamentProvider.stageRoot[sumPeople];
+
+        for (int i = 0; i < sumPeople; i++)
+        {
+            int random = UnityEngine.Random.Range(0, stageRootList.Count - 1);
+
+            newStageRoots[i] = stageRoots[i].Clone();
+
+            newStageRoots[i].playerName = stageRootList[random].playerName;
+            newStageRoots[i].playerColor = stageRootList[random].playerColor;
+
+            stageRootList[random] = stageRootList[stageRootList.Count - 1];
+            stageRootList.RemoveAt(stageRootList.Count - 1);
+        }
+
+        newTournamentData.stageRoots = newStageRoots;
+
+        TournamentProvider.individualTournamentData = newTournamentData;
+
+        TournamentProvider.individualTournamentData.isUpdate = 2;
     }
 
     // Specific Function

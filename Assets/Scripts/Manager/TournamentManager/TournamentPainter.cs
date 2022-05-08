@@ -33,6 +33,7 @@ public class TournamentPainter : MonoBehaviour
         TournamentProvider.tournamentContainerObject tournamentContainerObjects,
         TournamentProvider.tournamentOriginalObject tournamentOriginalObjects,
         TournamentProvider.tournamentData tournamentData,
+        GameObject gameTitleText,
         bool setColor,
         Vector2 screenSize,
         TournamentProvider TournamentProvider
@@ -53,6 +54,8 @@ public class TournamentPainter : MonoBehaviour
         int sumPeople = stageRoots.Length;
 
         if (sumPeople <= 1) return null;
+
+        UniversalFunction.SetInputFieldText(gameTitleText, tournamentData.title);
 
         TournamentProvider.tournamentData sub = tournamentData;
 

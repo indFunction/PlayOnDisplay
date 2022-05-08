@@ -56,6 +56,7 @@ public class TournamentWriter : MonoBehaviour
 
                 sw.WriteLine("Export Time," + UniversalFunction.GenerateDateTimeString(dt));
                 sw.WriteLine("Export Hash," + UniversalFunction.GenerateRandomString(useRandomString, 32));
+                sw.WriteLine("Title," + tournamentData.title);
                 sw.WriteLine("Allow Walkover," + (tournamentData.allowWalkover ? "True" : "False"));
                 sw.WriteLine("People," + sumPeople.ToString());
                 sw.WriteLine("Group," + tournamentData.defaultNumGroup.ToString());

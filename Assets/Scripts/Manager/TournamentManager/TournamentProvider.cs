@@ -45,9 +45,7 @@ public class TournamentProvider : MonoBehaviour
     [SerializeField] private Button rejectDataButton;
 
     [Header("Main Object")]
-    [SerializeField] private Button importDataSubButton;
-    [SerializeField] private Button saveDataButton;
-    [SerializeField] private Button exitGameButton;
+    [SerializeField] private GameObject gameTitleInput;
     // [SerializeField] private GameObject sumGameText;
     [SerializeField] private GameObject finishGameText;
     [SerializeField] private GameObject remainingGameText;
@@ -82,6 +80,7 @@ public class TournamentProvider : MonoBehaviour
     public class tournamentData
     {
         public int isUpdate = 0;
+        public string title = "";
         public bool allowWalkover = false;
         public int defaultNumGroup = 0;
         public stageRoot[] stageRoots;
@@ -241,6 +240,7 @@ public class TournamentProvider : MonoBehaviour
                         individualTournamentContainerObjects,
                         individualTournamentOriginalObjects,
                         individualTournamentData,
+                        gameTitleInput,
                         false,
                         screenSize,
                         this
@@ -328,6 +328,7 @@ public class TournamentProvider : MonoBehaviour
             individualTournamentContainerObjects,
             individualTournamentOriginalObjects,
             individualTournamentData,
+            gameTitleInput,
             loadFileType == 2 ? false : true,
             screenSize,
             this
@@ -442,6 +443,7 @@ public class TournamentProvider : MonoBehaviour
                 individualTournamentContainerObjects,
                 individualTournamentOriginalObjects,
                 individualTournamentData,
+                gameTitleInput,
                 false,
                 screenSize,
                 this
@@ -460,6 +462,8 @@ public class TournamentProvider : MonoBehaviour
 
         StandaloneFileBrowser.SaveFilePanelAsync("Save File", "", "Data", extensionList, (string path) =>
         {
+            individualTournamentData.title = UniversalFunction.GetInputFieldText(gameTitleInput);
+
             TournamentWriter.SaveData(individualTournamentData, path);
         });
     }

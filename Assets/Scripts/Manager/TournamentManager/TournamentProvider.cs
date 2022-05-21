@@ -15,6 +15,7 @@ public class TournamentProvider : MonoBehaviour
     public TournamentEditor TournamentEditor;
     public TournamentReader TournamentReader;
     public TournamentWriter TournamentWriter;
+    public TournamentExporter TournamentExporter;
 
     [Header("Layer Object")]
     [SerializeField] private GameObject setupLayer;
@@ -80,6 +81,7 @@ public class TournamentProvider : MonoBehaviour
     public class tournamentData
     {
         public int isUpdate = 0;
+        public string hash = "";
         public string title = "";
         public bool allowWalkover = false;
         public int defaultNumGroup = 0;
@@ -494,6 +496,13 @@ public class TournamentProvider : MonoBehaviour
     public void ShufflePlayer()
     {
         TournamentEditor.ShufflePlayer();
+    }
+
+    public void ExportGameRanking()
+    {
+        individualTournamentData.title = UniversalFunction.GetInputFieldText(gameTitleInput);
+
+        TournamentExporter.ExportGameRanking(individualTournamentData);
     }
 
     public void ReadyExitGame()

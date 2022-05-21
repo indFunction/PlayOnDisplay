@@ -26,6 +26,18 @@ public class PlainManager : MonoBehaviour
 
     public void ReplaceDisplay(int id)
     {
+        GameObject dummy = SetDisplay(id);
+    }
+
+    public GameObject ReplaceAndTakeDisplay(int id)
+    {
+        GameObject cloneDisplayObject = SetDisplay(id);
+
+        return cloneDisplayObject;
+    }
+
+    GameObject SetDisplay(int id)
+    {
         GameObject cloneDisplayObject = UniversalFunction.SetCloneObject(originalDisplayObjects[id], DisplayController.absoluteObject);
 
         GameObject[] newDisplayObjects = UniversalFunction.ReplaceGameObjectArray(UserController.displayObjects, cloneDisplayObject, plainDisplay);
@@ -36,5 +48,7 @@ public class PlainManager : MonoBehaviour
         DisplayController.UpdateDisplayCircle(-1);
 
         GameObject.Destroy(plainDisplay);
+
+        return cloneDisplayObject;
     }
 }

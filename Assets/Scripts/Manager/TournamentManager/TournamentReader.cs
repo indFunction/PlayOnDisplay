@@ -72,7 +72,7 @@ public class TournamentReader : MonoBehaviour
             }
         }
 
-        string checkHash = "";
+        string hash = "";
         string title = "";
         bool allowWalkover = false;
         int sumPlayer = 0;
@@ -80,14 +80,14 @@ public class TournamentReader : MonoBehaviour
 
         for (int i = 0; i < csv.Count; i++)
         {
-            GetStageInformationProperty(csv[i], "Export Hash", ref checkHash);
+            GetStageInformationProperty(csv[i], "Hash", ref hash);
             GetStageInformationProperty(csv[i], "Title", ref title);
             GetStageInformationProperty(csv[i], "Allow Walkover", ref allowWalkover);
             GetStageInformationProperty(csv[i], "People", ref sumPlayer);
             GetStageInformationProperty(csv[i], "Group", ref numGroup);
         }
 
-        if (checkHash == "" || sumPlayer == 0 || numGroup == 0)
+        if (hash == "" || sumPlayer == 0 || numGroup == 0)
         {
             CallError();
 
@@ -96,6 +96,7 @@ public class TournamentReader : MonoBehaviour
 
         TournamentProvider.tournamentData tournamentData = TournamentMaker.SetInitialTournamentData(sumPlayer, numGroup);
 
+        tournamentData.hash = hash;
         tournamentData.title = title;
         tournamentData.allowWalkover = allowWalkover;
 

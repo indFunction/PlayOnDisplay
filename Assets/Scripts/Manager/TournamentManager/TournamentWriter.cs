@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class TournamentWriter : MonoBehaviour
 {
-    [HideInInspector] private string useRandomString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
     // Unity
 
     void Start()
@@ -39,11 +37,6 @@ public class TournamentWriter : MonoBehaviour
         int stageHeight = stageColliders.GetLength(0);
         int stageWidth = stageColliders.GetLength(1);
 
-        UniversalFunction.SetInitState
-        (
-            UniversalFunction.GenerateRandomString(useRandomString, 32)
-        );
-
         int sector = 0;
 
         while (true)
@@ -55,7 +48,7 @@ public class TournamentWriter : MonoBehaviour
                 sw.WriteLine("");
 
                 sw.WriteLine("Export Time," + UniversalFunction.GenerateDateTimeString(dt));
-                sw.WriteLine("Export Hash," + UniversalFunction.GenerateRandomString(useRandomString, 32));
+                sw.WriteLine("Hash," + tournamentData.hash);
                 sw.WriteLine("Title," + tournamentData.title);
                 sw.WriteLine("Allow Walkover," + (tournamentData.allowWalkover ? "True" : "False"));
                 sw.WriteLine("People," + sumPeople.ToString());

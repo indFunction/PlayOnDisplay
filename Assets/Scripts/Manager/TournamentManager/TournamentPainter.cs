@@ -382,12 +382,10 @@ public class TournamentPainter : MonoBehaviour
 
         int sumPeople = stageRoots.Length;
 
-        string optionZeroFill = "D" + UniversalFunction.CalcValeToClosePow((float)sumPeople, 10f);
-
         Color32 playerColor = stageRoots[id].playerColor;
 
         playerImage.color = playerColor;
-        UniversalFunction.SetText(playerNumberText, 0, id.ToString(optionZeroFill), playerColor);
+        UniversalFunction.SetText(playerNumberText, 0, UniversalFunction.AlignDigitsToMaxNum(id, sumPeople), playerColor);
 
         UniversalFunction.SetInputFieldText(playerNameInput, stageRoots[id].playerName);
         UniversalFunction.SetInputFieldText(playerColorInput, ColorUtility.ToHtmlStringRGB(playerColor));

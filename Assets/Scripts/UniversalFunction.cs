@@ -293,6 +293,13 @@ public class UniversalFunction : MonoBehaviour
         return fitSize;
     }
 
+    public static string AlignDigitsToMaxNum(int num, int max)
+    {
+        string optionZeroFill = "D" + CalcValeToClosePow((float)max, 10f);
+
+        return num.ToString(optionZeroFill);
+    }
+
     public static void DestroyChildObject(GameObject go)
     {
         foreach (Transform child in go.transform) GameObject.Destroy(child.gameObject);

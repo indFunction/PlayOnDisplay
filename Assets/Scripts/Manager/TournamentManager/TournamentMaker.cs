@@ -5,15 +5,15 @@ using UnityEngine;
 
 public class TournamentMaker : MonoBehaviour
 {
+    [HideInInspector] private string useRandomString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
     // Usable Function
 
     public TournamentProvider.tournamentData SetInitialTournamentData(int sumPeople, int numGroup)
     {
         string[] playerName = new string[sumPeople];
 
-        string optionZeroFill = "D" + UniversalFunction.CalcValeToClosePow((float)sumPeople, 10f);
-
-        for (int i = 0; i < sumPeople; i++) playerName[i] = "John Doe " + i.ToString(optionZeroFill);
+        for (int i = 0; i < sumPeople; i++) playerName[i] = "John Doe " + UniversalFunction.AlignDigitsToMaxNum(i, sumPeople);
 
         TournamentProvider.tournamentData tournamentData = SetInitialStage(sumPeople, playerName, numGroup);
 
@@ -63,6 +63,12 @@ public class TournamentMaker : MonoBehaviour
         tournamentData.stageColliders = stageColliders;
         tournamentData.stageProperties = stageProperties;
 
+        UniversalFunction.SetInitState
+        (
+            UniversalFunction.GenerateRandomString(useRandomString, 32)
+        );
+
+        tournamentData.hash = UniversalFunction.GenerateRandomString(useRandomString, 32);
         tournamentData.defaultNumGroup = numGroup;
 
         return tournamentData;

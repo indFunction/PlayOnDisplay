@@ -32,6 +32,16 @@ public class MemoManager : MonoBehaviour
 
     // Custom Function
 
+    public string GetMemoInputField()
+    {
+        return UniversalFunction.GetInputFieldText(memoInputField);
+    }
+
+    public void SetMemoInputField(string text)
+    {
+        UniversalFunction.SetInputFieldText(memoInputField, text);
+    }
+
     public void ImportData()
     {
         var extensionList = new[]
@@ -48,7 +58,7 @@ public class MemoManager : MonoBehaviour
                 res = sr.ReadToEnd();
             }
 
-            UniversalFunction.SetInputFieldText(memoInputField, res);
+            SetMemoInputField(res);
         });
     }
 
@@ -61,7 +71,7 @@ public class MemoManager : MonoBehaviour
 
         StandaloneFileBrowser.SaveFilePanelAsync("Save File", "", "Memo", extensionList, (string path) =>
         {
-            string res = UniversalFunction.GetInputFieldText(memoInputField);
+            string res = GetMemoInputField();
 
             StreamWriter sw = new StreamWriter(@path, false, System.Text.Encoding.GetEncoding("UTF-8"));
 

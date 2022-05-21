@@ -260,7 +260,24 @@ public class UserController : MonoBehaviour
         individualInterfaceConfigsB[num].isFocus = false;
     }
 
+    public GameObject GetDisplayObject(int val)
+    {
+        return displayObjects[AssumingMoveDisplayTargetNum(val)];
+    }
+
     public void AddDisplay()
+    {
+        GameObject dummy = SetDisplay();
+    }
+
+    public GameObject AddDisplay(int defaultDisplayId)
+    {
+        GameObject cloneSomeObject = SetDisplay().GetComponentInChildren<PlainManager>().ReplaceAndTakeDisplay(defaultDisplayId);
+
+        return cloneSomeObject;
+    }
+
+    GameObject SetDisplay()
     {
         GameObject clonePlainObject = UniversalFunction.SetCloneObject(plainObject, DisplayController.absoluteObject);
 
@@ -273,6 +290,8 @@ public class UserController : MonoBehaviour
         DisplayController.UpdateDisplayCircle(num + 1);
 
         updateDisplayTargetNum = true;
+
+        return clonePlainObject;
     }
 
     public void ReadyRemoveDisplay()
@@ -337,27 +356,36 @@ public class UserController : MonoBehaviour
 
     public void MoveDisplayTargetNum(int val)
     {
-        if (val < displayObjects.Length && val > displayObjects.Length * -1)
-        {
-            if (val > 0)
-            {
-                displayTargetNum += val;
-                displayTargetNum = displayTargetNum >= displayObjects.Length ? displayTargetNum - displayObjects.Length : displayTargetNum;
-            }
-            else if (val < 0)
-            {
-                displayTargetNum += val;
-                displayTargetNum = displayTargetNum < 0 ? displayTargetNum + displayObjects.Length : displayTargetNum;
-            }
-            else
-            {
-                displayTargetNum = 0;
-            }
-        }
+        displayTargetNum = AssumingMoveDisplayTargetNum(val);
 
         SetMoveDisplayButton(displayTargetNum);
 
         updateDisplayTargetNum = true;
+    }
+
+    int AssumingMoveDisplayTargetNum(int val)
+    {
+        int res = displayTargetNum;
+
+        if (val < displayObjects.Length && val > displayObjects.Length * -1)
+        {
+            if (val > 0)
+            {
+                res += val;
+                res = res >= displayObjects.Length ? res - displayObjects.Length : res;
+            }
+            else if (val < 0)
+            {
+                res += val;
+                res = res < 0 ? res + displayObjects.Length : res;
+            }
+            else
+            {
+                res = 0;
+            }
+        }
+
+        return res;
     }
 
     public void SetMoveDisplayButton(int num)

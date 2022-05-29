@@ -283,7 +283,7 @@ public class UserController : MonoBehaviour
 
         int num = displayObjects.Length > 0 ? displayTargetNum : -1;
 
-        displayObjects = UniversalFunction.InterruptAddGameObjectArray(displayObjects, clonePlainObject, num);
+        displayObjects = UniversalFunction.InterruptAddArray(displayObjects, clonePlainObject, num);
 
         DisplayController.circleObjects = displayObjects;
 
@@ -300,7 +300,7 @@ public class UserController : MonoBehaviour
 
         // Debug.Log("Do you want to remove the display?");
 
-        go[0].onClick.AddListener(() => { RemoveDisplay(); });
+        go[0].onClick.AddListener(RemoveDisplay);
 
         updateDisplayTargetNum = true;
     }
@@ -326,14 +326,14 @@ public class UserController : MonoBehaviour
         {
             GameObject.Destroy(displayObjects[num]);
 
-            displayObjects = UniversalFunction.InterruptRemoveGameObjectArray(displayObjects, num);
+            displayObjects = UniversalFunction.InterruptRemoveArray(displayObjects, num);
         }
         else
         {
             GameObject clonePlainObject = UniversalFunction.SetCloneObject(plainObject, DisplayController.absoluteObject);
             GameObject destroyObject = displayObjects[0];
 
-            displayObjects = UniversalFunction.ReplaceGameObjectArray(displayObjects, clonePlainObject, destroyObject);
+            displayObjects = UniversalFunction.ReplaceArray(displayObjects, clonePlainObject, destroyObject);
 
             GameObject.Destroy(destroyObject);
         }
@@ -442,7 +442,7 @@ public class UserController : MonoBehaviour
 
         // Debug.Log("Do you want to close this application?");
 
-        go[0].onClick.AddListener(() => { CloseApplication(); });
+        go[0].onClick.AddListener(CloseApplication);
     }
 
     public void CloseApplication()

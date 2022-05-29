@@ -156,7 +156,7 @@ public class NotificationController : MonoBehaviour
                 break;
         }
 
-        if (resetEvent) go.onClick.AddListener(() => { CommandNotification(); });
+        if (resetEvent) go.onClick.AddListener(CommandNotification);
 
         return go;
     }

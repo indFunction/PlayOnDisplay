@@ -28,7 +28,7 @@ public class TournamentPainter : MonoBehaviour
 
     // Usable Function
 
-    public TournamentProvider.tournamentData GenerareInitialTournament
+    public TournamentProvider.tournamentData GenerateInitialTournament
     (
         TournamentProvider.tournamentContainerObject tournamentContainerObjects,
         TournamentProvider.tournamentOriginalObject tournamentOriginalObjects,
@@ -98,8 +98,8 @@ public class TournamentPainter : MonoBehaviour
 
                 if (mode == 0 || mode == 1)
                 {
-                    MoveLineRenderer(stageColliders[y, x].resultBranchObject.GetComponent<LineRenderer>(), startBranchPos, endBranchPos, screenSize);
-                    MoveLineRenderer(stageColliders[y, x].resultJointObject.GetComponent<LineRenderer>(), startJointPos, endJointPos, screenSize);
+                    UniversalFunction.MoveLineRenderer(stageColliders[y, x].resultBranchObject.GetComponent<LineRenderer>(), startBranchPos, endBranchPos, screenSize);
+                    UniversalFunction.MoveLineRenderer(stageColliders[y, x].resultJointObject.GetComponent<LineRenderer>(), startJointPos, endJointPos, screenSize);
                 }
 
                 if (mode == 0 || mode == 2)
@@ -192,13 +192,13 @@ public class TournamentPainter : MonoBehaviour
                     stageColliders[y, x].resultBranchObject.SetActive(true);
                     stageColliders[y, x].resultJointObject.SetActive(true);
 
-                    MoveLineRenderer(stageColliders[y, x].resultBranchObject.GetComponent<LineRenderer>(), startBranchResultPos, startBranchResultPos, screenSize);
-                    MoveLineRenderer(stageColliders[y, x].resultJointObject.GetComponent<LineRenderer>(), endBranchResultPos, endBranchResultPos, screenSize);
+                    UniversalFunction.MoveLineRenderer(stageColliders[y, x].resultBranchObject.GetComponent<LineRenderer>(), startBranchResultPos, startBranchResultPos, screenSize);
+                    UniversalFunction.MoveLineRenderer(stageColliders[y, x].resultJointObject.GetComponent<LineRenderer>(), endBranchResultPos, endBranchResultPos, screenSize);
                 }
                 else
                 {
-                    MoveLineRenderer(stageColliders[y, x].resultBranchObject.GetComponent<LineRenderer>(), startBranchPos, endBranchPos, screenSize);
-                    MoveLineRenderer(stageColliders[y, x].resultJointObject.GetComponent<LineRenderer>(), startJointPos, endJointPos, screenSize);
+                    UniversalFunction.MoveLineRenderer(stageColliders[y, x].resultBranchObject.GetComponent<LineRenderer>(), startBranchPos, endBranchPos, screenSize);
+                    UniversalFunction.MoveLineRenderer(stageColliders[y, x].resultJointObject.GetComponent<LineRenderer>(), startJointPos, endJointPos, screenSize);
                 }
             }
         }
@@ -304,7 +304,7 @@ public class TournamentPainter : MonoBehaviour
                 );
             }
 
-            log += " ]\n\n";
+            log += " ]" + (y < stageHeight - 1 ? "\n\n" : "\n");
         }
 
         return log;
@@ -430,9 +430,11 @@ public class TournamentPainter : MonoBehaviour
         Vector2 screenSize
     )
     {
-        TournamentProvider.stageRoot[] stageRoots = tournamentData.stageRoots;
-        TournamentProvider.stageCollider[,] stageColliders = tournamentData.stageColliders;
-        TournamentProvider.stageProperty[] stageProperties = tournamentData.stageProperties;
+        TournamentProvider.tournamentData sub = tournamentData;
+
+        TournamentProvider.stageRoot[] stageRoots = sub.stageRoots;
+        TournamentProvider.stageCollider[,] stageColliders = sub.stageColliders;
+        TournamentProvider.stageProperty[] stageProperties = sub.stageProperties;
 
         int sumPeople = stageRoots.Length;
 
@@ -477,8 +479,6 @@ public class TournamentPainter : MonoBehaviour
             }
         }
 
-        TournamentProvider.tournamentData sub = tournamentData;
-
         sub.stageRoots = stageRoots;
         sub.stageColliders = stageColliders;
 
@@ -494,9 +494,11 @@ public class TournamentPainter : MonoBehaviour
         Vector2 screenSize
     )
     {
-        TournamentProvider.stageRoot[] stageRoots = tournamentData.stageRoots;
-        TournamentProvider.stageCollider[,] stageColliders = tournamentData.stageColliders;
-        TournamentProvider.stageProperty[] stageProperties = tournamentData.stageProperties;
+        TournamentProvider.tournamentData sub = tournamentData;
+
+        TournamentProvider.stageRoot[] stageRoots = sub.stageRoots;
+        TournamentProvider.stageCollider[,] stageColliders = sub.stageColliders;
+        TournamentProvider.stageProperty[] stageProperties = sub.stageProperties;
 
         int sumPeople = stageRoots.Length;
 
@@ -538,8 +540,6 @@ public class TournamentPainter : MonoBehaviour
                 }
             }
         }
-
-        TournamentProvider.tournamentData sub = tournamentData;
 
         sub.stageColliders = stageColliders;
 
@@ -650,7 +650,9 @@ public class TournamentPainter : MonoBehaviour
         TournamentProvider TournamentProvider
     )
     {
-        TournamentProvider.stageRoot[] stageRoots = tournamentData.stageRoots;
+        TournamentProvider.tournamentData sub = tournamentData;
+
+        TournamentProvider.stageRoot[] stageRoots = sub.stageRoots;
 
         int sumPeople = stageRoots.Length;
 
@@ -679,8 +681,6 @@ public class TournamentPainter : MonoBehaviour
                 TournamentProvider
             );
         }
-
-        TournamentProvider.tournamentData sub = tournamentData;
 
         sub.stageRoots = stageRoots;
 
@@ -740,31 +740,9 @@ public class TournamentPainter : MonoBehaviour
 
         LineRenderer cloneLineRenderer = cloneLineObject.GetComponent<LineRenderer>();
 
-        MoveLineRenderer(cloneLineRenderer, startPos, endPos, screenSize);
+        UniversalFunction.MoveLineRenderer(cloneLineRenderer, startPos, endPos, screenSize);
 
         return cloneLineObject;
-    }
-
-    void MoveLineRenderer(LineRenderer lineRenderer, Vector2 startPos, Vector2 endPos, Vector2 screenSize)
-    {
-        Vector3[] pos = new Vector3[2]
-        {
-            new Vector3
-            (
-                UniversalFunction.ConvScreenCentralReference(startPos.x, screenSize.x, false),
-                UniversalFunction.ConvScreenCentralReference(startPos.y, screenSize.y, false),
-                0f
-            ),
-            new Vector3
-            (
-                UniversalFunction.ConvScreenCentralReference(endPos.x, screenSize.x, false),
-                UniversalFunction.ConvScreenCentralReference(endPos.y, screenSize.y, false),
-                0f
-            )
-        };
-
-        lineRenderer.SetPosition(0, pos[0]);
-        lineRenderer.SetPosition(1, pos[1]);
     }
 
     GameObject SetPlayerObject

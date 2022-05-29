@@ -10,7 +10,8 @@
         "Lerp",
         "Mathf",
         "UGUI",
-        "prettierignore"
+        "prettierignore",
+        "Interactable"
     ],
     "files.autoGuessEncoding": true,
     "files.exclude": {

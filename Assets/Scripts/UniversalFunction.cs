@@ -352,7 +352,7 @@ public class UniversalFunction : MonoBehaviour
         }
     }
 
-    public static GameObject[] InterruptAddGameObjectArray(GameObject[] gos, GameObject go, int num)
+    public static GameObject[] InterruptAddArray(GameObject[] gos, GameObject go, int num)
     {
         int mode = 1;
 
@@ -381,7 +381,7 @@ public class UniversalFunction : MonoBehaviour
         return newArray;
     }
 
-    public static GameObject[] InterruptRemoveGameObjectArray(GameObject[] gos, int num)
+    public static GameObject[] InterruptRemoveArray(GameObject[] gos, int num)
     {
         int mode = -1;
 
@@ -410,7 +410,7 @@ public class UniversalFunction : MonoBehaviour
         return newArray;
     }
 
-    public static GameObject[] ReplaceGameObjectArray(GameObject[] gos, GameObject replaceObject, GameObject targetObject)
+    public static GameObject[] ReplaceArray(GameObject[] gos, GameObject replaceObject, GameObject targetObject)
     {
         GameObject[] newArray = gos;
 
@@ -516,6 +516,37 @@ public class UniversalFunction : MonoBehaviour
         }
     }
 
+    public static void SetButtonColor(Button button, int mode, Color32 color)
+    {
+        ColorBlock colorBlock = button.colors;
+
+        switch (mode)
+        {
+            case 0:
+                colorBlock.normalColor = color;
+                break;
+            case 1:
+                colorBlock.highlightedColor = color;
+                break;
+            case 2:
+                colorBlock.pressedColor = color;
+                break;
+            case 3:
+                colorBlock.selectedColor = color;
+                break;
+            case 4:
+                colorBlock.disabledColor = color;
+                break;
+        }
+
+        button.colors = colorBlock;
+    }
+
+    public static void SetInteractableButton(Button button, bool interactable)
+    {
+        button.interactable = interactable;
+    }
+
     public static string GetInputFieldText(GameObject go)
     {
         TMP_InputField goTMP_InputField = go.GetComponent<TMP_InputField>();
@@ -578,6 +609,45 @@ public class UniversalFunction : MonoBehaviour
             {
                 Debug.LogError("Component: InputField or TMP_InputField does not found!");
             }
+        }
+    }
+
+    public static void MoveLineRenderer(LineRenderer lineRenderer, Vector2 startPos, Vector2 endPos, Vector2 screenSize)
+    {
+        Vector3[] pos = new Vector3[2]
+        {
+            new Vector3
+            (
+                ConvScreenCentralReference(startPos.x, screenSize.x, false),
+                ConvScreenCentralReference(startPos.y, screenSize.y, false),
+                0f
+            ),
+            new Vector3
+            (
+                ConvScreenCentralReference(endPos.x, screenSize.x, false),
+                ConvScreenCentralReference(endPos.y, screenSize.y, false),
+                0f
+            )
+        };
+
+        lineRenderer.SetPosition(0, pos[0]);
+        lineRenderer.SetPosition(1, pos[1]);
+    }
+
+    public static void MoveLineRenderer(LineRenderer lineRenderer, Vector2[] pos, Vector2 screenSize)
+    {
+        int sumPos = pos.Length;
+
+        for (int i = 0; i < sumPos; i++)
+        {
+            Vector3 sub = new Vector3
+            (
+                ConvScreenCentralReference(pos[i].x, screenSize.x, false),
+                ConvScreenCentralReference(pos[i].y, screenSize.y, false),
+                0f
+            );
+
+            lineRenderer.SetPosition(i, sub);
         }
     }
 

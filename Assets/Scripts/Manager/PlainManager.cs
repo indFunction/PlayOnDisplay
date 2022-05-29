@@ -40,7 +40,7 @@ public class PlainManager : MonoBehaviour
     {
         GameObject cloneDisplayObject = UniversalFunction.SetCloneObject(originalDisplayObjects[id], DisplayController.absoluteObject);
 
-        GameObject[] newDisplayObjects = UniversalFunction.ReplaceGameObjectArray(UserController.displayObjects, cloneDisplayObject, plainDisplay);
+        GameObject[] newDisplayObjects = UniversalFunction.ReplaceArray(UserController.displayObjects, cloneDisplayObject, plainDisplay);
 
         UserController.displayObjects = newDisplayObjects;
         DisplayController.circleObjects = newDisplayObjects;

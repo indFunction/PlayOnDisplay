@@ -303,17 +303,13 @@ public class TournamentEditor : MonoBehaviour
 
         TournamentProvider.stageRoot[] stageRoots = newTournamentData.stageRoots;
 
-        string playerName = UniversalFunction.GetInputFieldText(TournamentProvider.individualTournamentMenuObjects.playerNameInput);
+        TournamentProvider.tournamentMenuObject menuObjects = TournamentProvider.individualTournamentMenuObjects;
+
+        string playerName = UniversalFunction.GetInputFieldText(menuObjects.playerNameInput);
 
         stageRoots[id].playerName = playerName;
 
-        UniversalFunction.SetButtonText
-        (
-            stageRoots[id].playerObject,
-            1,
-            playerName,
-            new Color(0f, 0f, 0f, 0f)
-        );
+        UniversalFunction.SetButtonText(stageRoots[id].playerObject, playerName);
 
         TournamentProvider.individualTournamentData = newTournamentData;
 
@@ -326,7 +322,9 @@ public class TournamentEditor : MonoBehaviour
 
         TournamentProvider.stageRoot[] stageRoots = newTournamentData.stageRoots;
 
-        string inputPlayerColor = UniversalFunction.GetInputFieldText(TournamentProvider.individualTournamentMenuObjects.playerColorInput);
+        TournamentProvider.tournamentMenuObject menuObjects = TournamentProvider.individualTournamentMenuObjects;
+
+        string inputPlayerColor = UniversalFunction.GetInputFieldText(menuObjects.playerColorInput);
 
         if (inputPlayerColor.Length % 3 != 0) return;
 
@@ -341,8 +339,8 @@ public class TournamentEditor : MonoBehaviour
             stageRoots[id].playerObject.GetComponent<Image>().color = playerColor;
             UniversalFunction.SetButtonText(stageRoots[id].playerObject, 2, "", playerColor);
 
-            TournamentProvider.individualTournamentMenuObjects.playerImage.color = playerColor;
-            UniversalFunction.SetText(TournamentProvider.individualTournamentMenuObjects.playerNumberText, 2, "", playerColor);
+            menuObjects.playerImage.color = playerColor;
+            UniversalFunction.SetText(menuObjects.playerNumberText, 2, "", playerColor);
 
             TournamentProvider.individualTournamentData = newTournamentData;
 

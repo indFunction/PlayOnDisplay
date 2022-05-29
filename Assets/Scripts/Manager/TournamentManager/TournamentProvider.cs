@@ -52,7 +52,7 @@ public class TournamentProvider : MonoBehaviour
     [SerializeField] private GameObject remainingGameText;
 
     [Header("Menu Object")]
-    [SerializeField] private Button closeMenuButton;
+    [SerializeField] private Button closePlayerMenuButton;
     [SerializeField] private Image playerImage;
     [SerializeField] private GameObject playerNameInput;
     [SerializeField] private GameObject playerColorInput;
@@ -165,7 +165,7 @@ public class TournamentProvider : MonoBehaviour
 
     public class tournamentMenuObject
     {
-        public Button closeMenuButton;
+        public Button closePlayerMenuButton;
         public Image playerImage;
         public GameObject playerNameInput;
         public GameObject playerColorInput;
@@ -206,8 +206,8 @@ public class TournamentProvider : MonoBehaviour
 
         individualTournamentMenuObjects = SetTournamentMenuObjects
         (
+            closePlayerMenuButton,
             playerImage,
-            closeMenuButton,
             playerNameInput,
             playerColorInput,
             playerNumberText,
@@ -237,7 +237,7 @@ public class TournamentProvider : MonoBehaviour
                     TournamentPainter.UpdateTournament(individualTournamentData, 2, screenSize);
                     break;
                 case 2:
-                    individualTournamentData = TournamentPainter.GenerareInitialTournament
+                    individualTournamentData = TournamentPainter.GenerateInitialTournament
                     (
                         individualTournamentContainerObjects,
                         individualTournamentOriginalObjects,
@@ -325,7 +325,7 @@ public class TournamentProvider : MonoBehaviour
             return;
         }
 
-        individualTournamentData = TournamentPainter.GenerareInitialTournament
+        individualTournamentData = TournamentPainter.GenerateInitialTournament
         (
             individualTournamentContainerObjects,
             individualTournamentOriginalObjects,
@@ -340,7 +340,7 @@ public class TournamentProvider : MonoBehaviour
 
         // Debug.Log(TournamentPainter.DebugTournamentCounter(individualTournamentCounter));
 
-        individualTournamentData.isUpdate = 2;
+        individualTournamentData.isUpdate = 3;
 
         selectLayerNum = TournamentPainter.ChangeLayer(individualTournamentLayerObjects, 1, -1);
     }
@@ -440,7 +440,7 @@ public class TournamentProvider : MonoBehaviour
 
             individualTournamentData = TournamentReader.ImportData(loadFilePath, TournamentMaker);
 
-            individualTournamentData = TournamentPainter.GenerareInitialTournament
+            individualTournamentData = TournamentPainter.GenerateInitialTournament
             (
                 individualTournamentContainerObjects,
                 individualTournamentOriginalObjects,
@@ -472,11 +472,13 @@ public class TournamentProvider : MonoBehaviour
 
     public void ReadyResetAllResults()
     {
+        CloseMenu();
+
         Button[] go = NotificationController.SetWarningNotification("全ての勝敗を初期化しますか？");
 
         // Debug.Log("Do you want to initialize all results?");
 
-        go[0].onClick.AddListener(() => { ResetAllResults(); });
+        go[0].onClick.AddListener(ResetAllResults);
     }
 
     public void ResetAllResults()
@@ -486,11 +488,13 @@ public class TournamentProvider : MonoBehaviour
 
     public void ReadyShufflePlayer()
     {
+        CloseMenu();
+
         Button[] go = NotificationController.SetWarningNotification("プレイヤーをシャッフルしますか？");
 
         // Debug.Log("Do you want to shuffle all players?");
 
-        go[0].onClick.AddListener(() => { ShufflePlayer(); });
+        go[0].onClick.AddListener(ShufflePlayer);
     }
 
     public void ShufflePlayer()
@@ -507,11 +511,13 @@ public class TournamentProvider : MonoBehaviour
 
     public void ReadyExitGame()
     {
+        CloseMenu();
+
         Button[] go = NotificationController.SetWarningNotification("試合を終了しますか？");
 
         // Debug.Log("Do you want to exit tournament?");
 
-        go[0].onClick.AddListener(() => { ExitGame(); });
+        go[0].onClick.AddListener(ExitGame);
     }
 
     public void ExitGame()
@@ -563,8 +569,8 @@ public class TournamentProvider : MonoBehaviour
 
     tournamentMenuObject SetTournamentMenuObjects
     (
+        Button closePlayerMenuButton,
         Image playerImage,
-        Button closeMenuButton,
         GameObject playerNameInput,
         GameObject playerColorInput,
         GameObject playerNumberText,
@@ -576,8 +582,8 @@ public class TournamentProvider : MonoBehaviour
     {
         tournamentMenuObject tournamentMenuObjects = new tournamentMenuObject();
 
+        tournamentMenuObjects.closePlayerMenuButton = closePlayerMenuButton;
         tournamentMenuObjects.playerImage = playerImage;
-        tournamentMenuObjects.closeMenuButton = closeMenuButton;
         tournamentMenuObjects.playerNameInput = playerNameInput;
         tournamentMenuObjects.playerColorInput = playerColorInput;
         tournamentMenuObjects.playerNumberText = playerNumberText;
@@ -598,10 +604,10 @@ public class TournamentProvider : MonoBehaviour
 
         int stageHeight = stageColliders.GetLength(0);
 
-        tournamentCounter tournamentCounter = new tournamentCounter();
+        tournamentCounter sub = new tournamentCounter();
 
-        tournamentCounter.nextGamePos[0] = -1;
-        tournamentCounter.nextGamePos[1] = -1;
+        sub.nextGamePos[0] = -1;
+        sub.nextGamePos[1] = -1;
 
         for (int y = 0; y < stageHeight; y++)
         {
@@ -609,29 +615,27 @@ public class TournamentProvider : MonoBehaviour
             {
                 if (stageColliders[y, x].type != 1)
                 {
-                    tournamentCounter.sumGame++;
+                    sub.sumGame++;
 
                     if (stageColliders[y, x].winner != -1)
                     {
-                        tournamentCounter.finishGame++;
+                        sub.finishGame++;
                     }
                     else
                     {
-                        tournamentCounter.remainingGame++;
+                        sub.remainingGame++;
 
-                        int[] nextGamePos = tournamentCounter.nextGamePos;
-
-                        if (nextGamePos[0] == -1 && nextGamePos[1] == -1)
+                        if (sub.nextGamePos[0] == -1 && sub.nextGamePos[1] == -1)
                         {
-                            tournamentCounter.nextGamePos[0] = y;
-                            tournamentCounter.nextGamePos[1] = x;
+                            sub.nextGamePos[0] = y;
+                            sub.nextGamePos[1] = x;
                         }
                     }
                 }
             }
         }
 
-        return tournamentCounter;
+        return sub;
     }
 
     Vector2 FocusTournamentGame(tournamentData tournamentData, tournamentCounter tournamentCounter, Vector2 limitDisplaySize)

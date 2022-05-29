@@ -31,7 +31,7 @@ public class TournamentExporter : MonoBehaviour
             }
         }
 
-        GameObject memoDisplay = UserController.AddDisplay(2);
+        GameObject memoDisplay = UserController.AddDisplay(3);
 
         memoDisplay.GetComponentInChildren<MemoManager>().SetMemoInputField(GetGameRanking(tournamentData));
     }

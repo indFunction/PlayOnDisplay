@@ -5,15 +5,15 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TournamentReader : MonoBehaviour
+public class LeagueReader : MonoBehaviour
 {
     public NotificationController NotificationController;
 
     // Usable Function
 
-    public TournamentProvider.tournamentData ImportList(string filePath, int numGroup, int maxSumPlayer, TournamentMaker TournamentMaker)
+    public LeagueProvider.leagueData ImportList(string filePath, int maxSumPlayer, bool isBooleanMode, LeagueMaker LeagueMaker)
     {
-        TournamentProvider.tournamentData tournamentData = new TournamentProvider.tournamentData();
+        LeagueProvider.leagueData leagueData = new LeagueProvider.leagueData();
 
         string[] playerList = new string[maxSumPlayer];
 
@@ -54,12 +54,12 @@ public class TournamentReader : MonoBehaviour
             // Debug.Log("Some player(s) have been excluded because the number of players has reached the maximum!");
         }
 
-        tournamentData = TournamentMaker.SetInitialTournamentData(playerList, numGroup);
+        leagueData = LeagueMaker.SetInitialLeagueData(playerList, isBooleanMode);
 
-        return tournamentData;
+        return leagueData;
     }
 
-    public TournamentProvider.tournamentData ImportData(string filePath, TournamentMaker TournamentMaker)
+    public LeagueProvider.leagueData ImportData(string filePath, LeagueMaker LeagueMaker)
     {
         List<string[]> csv = new List<string[]>();
 
@@ -74,42 +74,51 @@ public class TournamentReader : MonoBehaviour
 
         string hash = "";
         string title = "";
-        bool allowWalkover = false;
         int sumPlayer = 0;
-        int numGroup = 0;
+        bool isBooleanMode = false;
+        int winnerPoint = 0;
+        int loserPoint = 0;
+        int winPointWeight = 0;
+        int losePointWeight = 0;
 
         for (int i = 0; i < csv.Count; i++)
         {
             GetStageInformationProperty(csv[i], "Hash", ref hash);
             GetStageInformationProperty(csv[i], "Title", ref title);
-            GetStageInformationProperty(csv[i], "Allow Walkover", ref allowWalkover);
             GetStageInformationProperty(csv[i], "People", ref sumPlayer);
-            GetStageInformationProperty(csv[i], "Group", ref numGroup);
+            GetStageInformationProperty(csv[i], "Boolean Mode", ref isBooleanMode);
+            GetStageInformationProperty(csv[i], "Winner Point", ref winnerPoint);
+            GetStageInformationProperty(csv[i], "Loser Point", ref loserPoint);
+            GetStageInformationProperty(csv[i], "Win Point Weight", ref winPointWeight);
+            GetStageInformationProperty(csv[i], "Lose Point Weight", ref losePointWeight);
         }
 
-        if (hash == "" || sumPlayer == 0 || numGroup == 0)
+        if (hash == "" || sumPlayer == 0)
         {
             CallError();
 
             return null;
         }
 
-        TournamentProvider.tournamentData tournamentData = TournamentMaker.SetInitialTournamentData(sumPlayer, numGroup);
+        LeagueProvider.leagueData leagueData = LeagueMaker.SetInitialLeagueData(sumPlayer, isBooleanMode);
 
-        tournamentData.hash = hash;
-        tournamentData.title = title;
-        tournamentData.allowWalkover = allowWalkover;
+        leagueData.hash = hash;
+        leagueData.title = title;
+        leagueData.isBooleanMode = isBooleanMode;
+        leagueData.winnerPoint = winnerPoint;
+        leagueData.loserPoint = loserPoint;
+        leagueData.winPointWeight = winPointWeight;
+        leagueData.losePointWeight = losePointWeight;
 
-        TournamentProvider.stageRoot[] stageRoots = tournamentData.stageRoots;
-        TournamentProvider.stageCollider[,] stageColliders = tournamentData.stageColliders;
-        TournamentProvider.stageProperty[] stageProperties = tournamentData.stageProperties;
+        LeagueProvider.stageRoot[] stageRoots = leagueData.stageRoots;
+        LeagueProvider.stageTable[,] stageTables = leagueData.stageTables;
 
         bool haveError = false;
 
         for (int i = 0; i < csv.Count; i++)
         {
             haveError = GetStageRootProperty(csv[i], sumPlayer, ref stageRoots) ? haveError : true;
-            haveError = GetStageColliderProperty(csv[i], sumPlayer, stageProperties, ref stageColliders) ? haveError : true;
+            haveError = GetStageTableProperty(csv[i], sumPlayer, ref stageTables) ? haveError : true;
         }
 
         if (haveError)
@@ -119,7 +128,7 @@ public class TournamentReader : MonoBehaviour
             return null;
         }
 
-        return tournamentData;
+        return leagueData;
     }
 
     void CallError()
@@ -146,7 +155,7 @@ public class TournamentReader : MonoBehaviour
         if (csv[0] == find) val = csv[1] == "True" || csv[1] == "true";
     }
 
-    bool GetStageRootProperty(string[] csv, int sumPlayer, ref TournamentProvider.stageRoot[] stageRoots)
+    bool GetStageRootProperty(string[] csv, int sumPlayer, ref LeagueProvider.stageRoot[] stageRoots)
     {
         if (stageRoots == null) return false;
 
@@ -175,30 +184,23 @@ public class TournamentReader : MonoBehaviour
         return true;
     }
 
-    bool GetStageColliderProperty(string[] csv, int sumPlayer, TournamentProvider.stageProperty[] stageProperties, ref TournamentProvider.stageCollider[,] stageColliders)
+    bool GetStageTableProperty(string[] csv, int sumPlayer, ref LeagueProvider.stageTable[,] stageTables)
     {
-        if (stageProperties == null || stageColliders == null) return false;
+        if (stageTables == null) return false;
 
-        if (csv[0] == "Branch")
+        if (csv[0] == "Data")
         {
-            int stageHeight = stageColliders.GetLength(0);
-            int stageWidth = stageColliders.GetLength(1);
-
             int y = int.Parse(csv[1]);
             int x = int.Parse(csv[2]);
             int winner = int.Parse(csv[3]);
+            int scoreA = int.Parse(csv[4]);
+            int scoreB = int.Parse(csv[5]);
 
-            if
-            (
-                y >= stageHeight ||
-                x >= stageWidth ||
-                !(
-                    winner >= -1 &&
-                    winner <= (y == 0 ? sumPlayer : stageProperties[y - 1].sumBranch)
-                )
-            ) return false;
+            if (y >= sumPlayer || x >= sumPlayer || winner < -1) return false;
 
-            stageColliders[y, x].winner = winner;
+            stageTables[y, x].winner = winner;
+            stageTables[y, x].scoreA = scoreA;
+            stageTables[y, x].scoreB = scoreB;
         }
 
         return true;

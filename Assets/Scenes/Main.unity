@@ -2079,6 +2079,7 @@ MonoBehaviour:
   winActionButton: {fileID: 301204327}
   cancelActionButton: {fileID: 101519902}
   maxSumPlayer: 100
+  criteriaScale: 50
   smoothTimes: 5
   screenSize: {x: 1800, y: 960}
 --- !u!114 &105711246
@@ -9848,7 +9849,7 @@ MonoBehaviour:
   m_text: Player Name
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6b4be5039fd6d8344a418ccaabe71c90, type: 2}
-  m_sharedMaterial: {fileID: -1010521807176742306, guid: 6b4be5039fd6d8344a418ccaabe71c90, type: 2}
+  m_sharedMaterial: {fileID: 741101243947896656, guid: 6b4be5039fd6d8344a418ccaabe71c90, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -14711,6 +14712,7 @@ MonoBehaviour:
   changeGamePointButton: {fileID: 1184083649}
   changeGamePointWeightButton: {fileID: 1513116798}
   maxSumPlayer: 25
+  criteriaScale: 10
   screenSize: {x: 1800, y: 960}
 --- !u!114 &751657873
 MonoBehaviour:
@@ -25772,7 +25774,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1361004846
 Transform:
   m_ObjectHideFlags: 0

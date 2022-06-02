@@ -14,6 +14,7 @@ public class LeaguePainter : MonoBehaviour
         LeagueProvider.leagueData leagueData,
         GameObject gameTitleText,
         bool setColor,
+        int criteriaScale,
         Vector2 screenSize,
         LeagueProvider LeagueProvider
     )
@@ -80,6 +81,7 @@ public class LeaguePainter : MonoBehaviour
             leagueOriginalObjects,
             sub,
             setColor,
+            criteriaScale,
             screenSize,
             LeagueProvider
         );
@@ -93,6 +95,7 @@ public class LeaguePainter : MonoBehaviour
         LeagueProvider.leagueOriginalObject leagueOriginalObjects,
         LeagueProvider.leagueData leagueData,
         bool setColor,
+        int criteriaScale,
         Vector2 screenSize,
         LeagueProvider LeagueProvider
     )
@@ -117,8 +120,10 @@ public class LeaguePainter : MonoBehaviour
 
         LeagueProvider.leagueData sub = leagueData;
 
-        sub = SetEveryPlayerObject(canvasObject, playerContainer, playerObject, leagueData, setColor ? 2 : 0, screenSize, LeagueProvider);
-        sub = SetEveryScoreObject(canvasObject, scoreContainer, scoreObject, leagueData, screenSize, LeagueProvider);
+        float objectScale = sumPeople < criteriaScale ? (float)(criteriaScale * 2f - sumPeople) / criteriaScale : 1f;
+
+        sub = SetEveryPlayerObject(canvasObject, playerContainer, playerObject, leagueData, setColor ? 2 : 0, objectScale, screenSize, LeagueProvider);
+        sub = SetEveryScoreObject(canvasObject, scoreContainer, scoreObject, leagueData, objectScale, screenSize, LeagueProvider);
         sub = SetEveryStatisticObject(canvasObject, textContainer, textObject, leagueData, screenSize);
 
         return sub;
@@ -504,6 +509,7 @@ public class LeaguePainter : MonoBehaviour
         GameObject playerObject,
         LeagueProvider.leagueData leagueData,
         int setColor,
+        float objectScale,
         Vector2 screenSize,
         LeagueProvider LeagueProvider
     )
@@ -538,6 +544,7 @@ public class LeaguePainter : MonoBehaviour
                 pos,
                 stageRoots[i].playerName,
                 stageRoots[i].playerColor,
+                objectScale,
                 screenSize,
                 LeagueProvider
             );
@@ -554,6 +561,7 @@ public class LeaguePainter : MonoBehaviour
         GameObject containerObject,
         GameObject scoreObject,
         LeagueProvider.leagueData leagueData,
+        float objectScale,
         Vector2 screenSize,
         LeagueProvider LeagueProvider
     )
@@ -581,6 +589,7 @@ public class LeaguePainter : MonoBehaviour
                     leagueData,
                     stageTables[y, x],
                     stageGridPoses[y + 1, x + 1].centerPos,
+                    objectScale,
                     screenSize,
                     LeagueProvider
                 );
@@ -793,6 +802,7 @@ public class LeaguePainter : MonoBehaviour
         Vector2[] pos,
         string name,
         Color32 playerColor,
+        float objectScale,
         Vector2 screenSize,
         LeagueProvider LeagueProvider
     )
@@ -806,6 +816,8 @@ public class LeaguePainter : MonoBehaviour
             UniversalFunction.ConnectRectParent(playerObject, clonePlayerObject);
 
             MoveTableObject(clonePlayerObject, pos[i], screenSize);
+
+            clonePlayerObject.transform.localScale = new Vector3(objectScale, objectScale, objectScale);
 
             Button clonePlayerButton = clonePlayerObject.GetComponent<Button>();
             clonePlayerButton.onClick.AddListener(() => { LeagueProvider.OpenPlayerMenu(id); });
@@ -830,6 +842,7 @@ public class LeaguePainter : MonoBehaviour
         LeagueProvider.leagueData leagueData,
         LeagueProvider.stageTable stageTable,
         Vector2 pos,
+        float objectScale,
         Vector2 screenSize,
         LeagueProvider LeagueProvider
     )
@@ -839,6 +852,8 @@ public class LeaguePainter : MonoBehaviour
         UniversalFunction.ConnectRectParent(scoreObject, cloneScoreObject);
 
         MoveTableObject(cloneScoreObject, pos, screenSize);
+
+        cloneScoreObject.transform.localScale = new Vector3(objectScale, objectScale, objectScale);
 
         Button cloneScoreButton = cloneScoreObject.GetComponent<Button>();
         cloneScoreButton.onClick.AddListener(() => { LeagueProvider.OpenScoreMenu(id); });

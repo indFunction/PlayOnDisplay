@@ -98,6 +98,7 @@ public class LeagueProvider : MonoBehaviour
     [SerializeField] private int maxSumPlayer = 25;
 
     [Header("Graphic Config")]
+    [SerializeField] private int criteriaScale = 10;
     [SerializeField] private Vector2 screenSize = new Vector2(1920f - 120f, 1080f - 120f);
 
     [HideInInspector] private string loadFilePath = "";
@@ -342,6 +343,7 @@ public class LeagueProvider : MonoBehaviour
                         individualLeagueOriginalObjects,
                         individualLeagueData,
                         false,
+                        criteriaScale,
                         screenSize,
                         this
                     );
@@ -354,6 +356,7 @@ public class LeagueProvider : MonoBehaviour
                         individualLeagueData,
                         gameTitleInput,
                         false,
+                        criteriaScale,
                         screenSize,
                         this
                     );
@@ -436,6 +439,7 @@ public class LeagueProvider : MonoBehaviour
             individualLeagueData,
             gameTitleInput,
             loadFileType == 2 ? false : true,
+            criteriaScale,
             screenSize,
             this
         );
@@ -586,6 +590,7 @@ public class LeagueProvider : MonoBehaviour
                 individualLeagueData,
                 gameTitleInput,
                 false,
+                criteriaScale,
                 screenSize,
                 this
             );

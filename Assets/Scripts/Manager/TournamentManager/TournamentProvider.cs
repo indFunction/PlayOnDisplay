@@ -66,6 +66,7 @@ public class TournamentProvider : MonoBehaviour
     [SerializeField] private int maxSumPlayer = 100;
 
     [Header("Graphic Config")]
+    [SerializeField] private int criteriaScale = 50;
     [SerializeField] private float smoothTimes = 5f;
     [SerializeField] private Vector2 screenSize = new Vector2(1920f - 120f, 1080f - 120f);
 
@@ -244,6 +245,7 @@ public class TournamentProvider : MonoBehaviour
                         individualTournamentData,
                         gameTitleInput,
                         false,
+                        criteriaScale,
                         screenSize,
                         this
                     );
@@ -332,6 +334,7 @@ public class TournamentProvider : MonoBehaviour
             individualTournamentData,
             gameTitleInput,
             loadFileType == 2 ? false : true,
+            criteriaScale,
             screenSize,
             this
         );
@@ -447,6 +450,7 @@ public class TournamentProvider : MonoBehaviour
                 individualTournamentData,
                 gameTitleInput,
                 false,
+                criteriaScale,
                 screenSize,
                 this
             );

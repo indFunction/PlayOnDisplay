@@ -35,6 +35,7 @@ public class TournamentPainter : MonoBehaviour
         TournamentProvider.tournamentData tournamentData,
         GameObject gameTitleText,
         bool setColor,
+        int criteriaScale,
         Vector2 screenSize,
         TournamentProvider TournamentProvider
     )
@@ -59,9 +60,11 @@ public class TournamentPainter : MonoBehaviour
 
         TournamentProvider.tournamentData sub = tournamentData;
 
+        float objectScale = sumPeople < criteriaScale ? (float)(criteriaScale * 2f - sumPeople) / criteriaScale : 1f;
+
         sub = SetEveryBaseLineRenderer(canvasObject, baseLineContainer, baseLineObject, tournamentData, screenSize);
         sub = SetEveryResultLineRenderer(canvasObject, resultLineContainer, resultLineObject, tournamentData, screenSize);
-        sub = SetEveryPlayerObject(canvasObject, playerContainer, playerObject, tournamentData, setColor ? 2 : 0, screenSize, TournamentProvider);
+        sub = SetEveryPlayerObject(canvasObject, playerContainer, playerObject, tournamentData, setColor ? 2 : 0, objectScale, screenSize, TournamentProvider);
 
         UpdateTournament(sub, 0, screenSize);
 
@@ -646,6 +649,7 @@ public class TournamentPainter : MonoBehaviour
         GameObject playerObject,
         TournamentProvider.tournamentData tournamentData,
         int setColor,
+        float objectScale,
         Vector2 screenSize,
         TournamentProvider TournamentProvider
     )
@@ -677,6 +681,7 @@ public class TournamentPainter : MonoBehaviour
                 stageRoots[x].currentPos,
                 stageRoots[x].playerName,
                 stageRoots[x].playerColor,
+                objectScale,
                 screenSize,
                 TournamentProvider
             );
@@ -754,6 +759,7 @@ public class TournamentPainter : MonoBehaviour
         Vector2 pos,
         string name,
         Color32 playerColor,
+        float objectScale,
         Vector2 screenSize,
         TournamentProvider TournamentProvider
     )
@@ -763,6 +769,8 @@ public class TournamentPainter : MonoBehaviour
         UniversalFunction.ConnectRectParent(playerObject, clonePlayerObject);
 
         MovePlayerObject(clonePlayerObject, pos, screenSize);
+
+        clonePlayerObject.transform.localScale = new Vector3(objectScale, objectScale, objectScale);
 
         Button clonePlayerButton = clonePlayerObject.GetComponent<Button>();
         clonePlayerButton.onClick.AddListener(() => { TournamentProvider.OpenMenu(id); });

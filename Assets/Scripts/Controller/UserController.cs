@@ -34,6 +34,8 @@ public class UserController : MonoBehaviour
 
     [HideInInspector] public bool hideInterface = false;
     [HideInInspector] public bool updateHideInterface = false;
+    [HideInInspector] public bool setLongShot = false;
+    [HideInInspector] public bool updateLongShot = false;
 
     [HideInInspector] private UniversalFunction.interfaceConfig[] individualInterfaceConfigsA;
     [HideInInspector] private interfaceConfig[] individualInterfaceConfigsB;
@@ -86,6 +88,7 @@ public class UserController : MonoBehaviour
         public bool closeApplication = false;
         public bool extendMode = false;
         public bool toggleInterface = false;
+        public bool toggleLongShot = false;
     }
 
     [HideInInspector] private Vector2 mousePos = Vector2.zero;
@@ -130,6 +133,13 @@ public class UserController : MonoBehaviour
             updateHideInterface = true;
         }
 
+        if (userOperationManagement.toggleLongShot)
+        {
+            setLongShot = !setLongShot;
+
+            updateLongShot = true;
+        }
+
         SetInterface(individualInterfaceConfigsB, smoothTimes);
 
         bool isInvalidInput = UniversalFunction.CheckSelectInputField() || NotificationController.isActive != 0;
@@ -150,6 +160,7 @@ public class UserController : MonoBehaviour
         if (updateDisplayTargetNum) updateDisplayTargetNum = false;
 
         if (updateHideInterface) updateHideInterface = false;
+        if (updateLongShot) updateLongShot = false;
     }
 
     // Custom Function
@@ -198,24 +209,46 @@ public class UserController : MonoBehaviour
         cameraObject.transform.position = UniversalFunction.MathfLerp
         (
             cameraObject.transform.position,
-            CameraMove.SetTransformPosition
+            !setLongShot ?
             (
-                mouseRot,
-                targetPos + CameraMove.AdjustPosAccordingRot
+                CameraMove.SetTransformPositionA
                 (
-                    (Vector3)targetTranslation * (targetZoom[0] > 0f ? targetZoom[0] : 0f),
-                    Vector3.zero,
-                    targetObject.transform.localEulerAngles
-                ),
-                targetRot,
-                displayDistanceA - targetZoom[0] * timesCameraZoom,
-                displayDistanceB,
-                cameraRotationMultiplyA,
-                cameraRotationMultiplyB
+                    mouseRot,
+                    targetPos + CameraMove.AdjustPosAccordingRot
+                    (
+                        (Vector3)targetTranslation * (targetZoom[0] > 0f ? targetZoom[0] : 0f),
+                        Vector3.zero,
+                        targetObject.transform.localEulerAngles
+                    ),
+                    targetRot,
+                    displayDistanceA - targetZoom[0] * timesCameraZoom,
+                    displayDistanceB,
+                    cameraRotationMultiplyA,
+                    cameraRotationMultiplyB
+                )
+            ) : (
+                CameraMove.SetTransformPositionB
+                (
+                    DisplayController.absoluteObject.transform.position + CameraMove.AdjustPosAccordingRot
+                    (
+                        Vector3.zero,
+                        Vector3.zero,
+                        targetObject.transform.localEulerAngles
+                    ),
+                    targetRot,
+                    (float)DisplayController.circleObjects.Length * 4f + 8f
+                )
             ),
             Time.deltaTime * smoothTimes
         );
-        cameraObject.transform.rotation = Quaternion.Euler(CameraMove.SetTransformRotation(mouseRot, targetRot));
+        cameraObject.transform.rotation = Quaternion.Euler(
+            !setLongShot ?
+            (
+                CameraMove.SetTransformRotationA(mouseRot, targetRot)
+            ) : (
+                CameraMove.SetTransformRotationB(targetRot)
+            )
+        );
     }
 
     Vector2 GetTargetTranslation(float minCameraResultZoom, float maxCameraResultZoom, bool selectInputField)
@@ -461,11 +494,18 @@ public class UserController : MonoBehaviour
     {
         if (Mouse.current != null && !isInvalidInput)
         {
-            userOperationManagement.pointerPos = Mouse.current.position.ReadValue();
-            userOperationManagement.pointerDelta[0] = Mouse.current.delta.ReadValue();
-            userOperationManagement.modeTranslation = Mouse.current.rightButton.isPressed;
-            userOperationManagement.zoomScroll[0] = Mouse.current.scroll.ReadValue().y;
-            userOperationManagement.zoomReset[0] = Mouse.current.middleButton.wasPressedThisFrame;
+            if (!setLongShot)
+            {
+                userOperationManagement.pointerPos = Mouse.current.position.ReadValue();
+                userOperationManagement.pointerDelta[0] = Mouse.current.delta.ReadValue();
+                userOperationManagement.modeTranslation = Mouse.current.rightButton.isPressed;
+                userOperationManagement.zoomScroll[0] = Mouse.current.scroll.ReadValue().y;
+                userOperationManagement.zoomReset[0] = Mouse.current.middleButton.wasPressedThisFrame;
+            }
+            else
+            {
+                userOperationManagement.modeTranslation = false;
+            }
         }
         else
         {
@@ -478,16 +518,21 @@ public class UserController : MonoBehaviour
 
         if (Keyboard.current != null && !isInvalidInput)
         {
-            userOperationManagement.keyMoveFaster = Keyboard.current.leftShiftKey.isPressed;
-            userOperationManagement.pointerDelta[1] = GetKeyMove(userOperationManagement.pointerDelta[1], userOperationManagement.keyMoveFaster);
-            userOperationManagement.zoomScroll[1] = GetKeyZoom(userOperationManagement.keyMoveFaster);
-            userOperationManagement.zoomReset[1] = Keyboard.current.minusKey.wasPressedThisFrame;
+            if (!setLongShot)
+            {
+                userOperationManagement.keyMoveFaster = Keyboard.current.leftShiftKey.isPressed;
+                userOperationManagement.pointerDelta[1] = GetKeyMove(userOperationManagement.pointerDelta[1], userOperationManagement.keyMoveFaster);
+                userOperationManagement.zoomScroll[1] = GetKeyZoom(userOperationManagement.keyMoveFaster);
+                userOperationManagement.zoomReset[1] = Keyboard.current.minusKey.wasPressedThisFrame;
+            }
+
             userOperationManagement.addDisplay = Keyboard.current.aKey.wasPressedThisFrame;
             userOperationManagement.removeDisplay = Keyboard.current.rKey.wasPressedThisFrame;
             userOperationManagement.moveDisplay = UniversalFunction.ConvBoolToInt(Keyboard.current.rightArrowKey.wasPressedThisFrame) - UniversalFunction.ConvBoolToInt(Keyboard.current.leftArrowKey.wasPressedThisFrame);
             userOperationManagement.closeApplication = Keyboard.current.qKey.wasPressedThisFrame;
             userOperationManagement.extendMode = Keyboard.current.leftCtrlKey.isPressed;
             userOperationManagement.toggleInterface = Keyboard.current.f1Key.wasPressedThisFrame;
+            userOperationManagement.toggleLongShot = Keyboard.current.zKey.wasPressedThisFrame;
         }
         else
         {
@@ -501,6 +546,7 @@ public class UserController : MonoBehaviour
             userOperationManagement.closeApplication = false;
             userOperationManagement.extendMode = false;
             userOperationManagement.toggleInterface = false;
+            userOperationManagement.toggleLongShot = false;
         }
     }
 

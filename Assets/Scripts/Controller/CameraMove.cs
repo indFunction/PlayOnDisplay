@@ -46,7 +46,7 @@ public class CameraMove : MonoBehaviour
         return CalcAngle(mousePos, fix, 90f);
     }
 
-    public Vector3 SetTransformPosition
+    public Vector3 SetTransformPositionA
     (
         Vector2 mouseRot,
         Vector3 targetPos,
@@ -70,9 +70,29 @@ public class CameraMove : MonoBehaviour
         );
     }
 
-    public Vector3 SetTransformRotation(Vector2 mouseRot, Vector3 targetRot)
+    public Vector3 SetTransformPositionB
+    (
+        Vector3 targetPos,
+        Vector3 targetRot,
+        float globalDistance
+    )
+    {
+        return CalcCenteredOnPoint
+        (
+            targetPos,
+            new Vector2(45f, targetRot.y),
+            globalDistance
+        );
+    }
+
+    public Vector3 SetTransformRotationA(Vector2 mouseRot, Vector3 targetRot)
     {
         return new Vector3(mouseRot.x, mouseRot.y, 0f) + targetRot;
+    }
+
+    public Vector3 SetTransformRotationB(Vector3 targetRot)
+    {
+        return new Vector3(45f, 0f, 0f) + targetRot;
     }
 
     public Vector3 AdjustPosAccordingRot(Vector3 pointPos, Vector3 targetPos, Vector3 targetRot) // Not perfect :(

@@ -18,7 +18,7 @@ public class CameraMove : MonoBehaviour
         return UniversalFunction.MathfLerp
         (
             resultTargetRot,
-            UniversalFunction.ConvLessMovementAngleA(newTargetRot, resultTargetRot),
+            newTargetRot,
             Time.deltaTime * delay
         );
     }
@@ -41,7 +41,7 @@ public class CameraMove : MonoBehaviour
         );
     }
 
-    public Vector2 CalcMouseRot(Vector3 mousePos, float fix)
+    public Vector2 CalcMouseRot(Vector2 mousePos, float fix)
     {
         return CalcAngle(mousePos, fix, 90f);
     }

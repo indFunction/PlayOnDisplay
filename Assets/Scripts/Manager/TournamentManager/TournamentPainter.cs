@@ -40,7 +40,6 @@ public class TournamentPainter : MonoBehaviour
         TournamentProvider TournamentProvider
     )
     {
-        GameObject canvasObject = tournamentContainerObjects.canvasObject;
         GameObject baseLineContainer = tournamentContainerObjects.baseLineContainer;
         GameObject resultLineContainer = tournamentContainerObjects.resultLineContainer;
         GameObject playerContainer = tournamentContainerObjects.playerContainer;
@@ -62,9 +61,9 @@ public class TournamentPainter : MonoBehaviour
 
         float objectScale = sumPeople < criteriaScale ? (float)(criteriaScale * 2f - sumPeople) / criteriaScale : 1f;
 
-        sub = SetEveryBaseLineRenderer(canvasObject, baseLineContainer, baseLineObject, tournamentData, screenSize);
-        sub = SetEveryResultLineRenderer(canvasObject, resultLineContainer, resultLineObject, tournamentData, screenSize);
-        sub = SetEveryPlayerObject(canvasObject, playerContainer, playerObject, tournamentData, setColor ? 2 : 0, objectScale, screenSize, TournamentProvider);
+        sub = SetEveryBaseLineRenderer(baseLineContainer, baseLineObject, tournamentData, screenSize);
+        sub = SetEveryResultLineRenderer(resultLineContainer, resultLineObject, tournamentData, screenSize);
+        sub = SetEveryPlayerObject(playerContainer, playerObject, tournamentData, setColor ? 2 : 0, objectScale, screenSize, TournamentProvider);
 
         UpdateTournament(sub, 0, screenSize);
 
@@ -426,7 +425,6 @@ public class TournamentPainter : MonoBehaviour
 
     TournamentProvider.tournamentData SetEveryBaseLineRenderer
     (
-        GameObject canvasObject,
         GameObject containerObject,
         GameObject lineObject,
         TournamentProvider.tournamentData tournamentData,
@@ -447,7 +445,6 @@ public class TournamentPainter : MonoBehaviour
         {
             stageRoots[x].branchObject = SetLineRenderer
             (
-                canvasObject,
                 containerObject,
                 lineObject,
                 stageRoots[x].startDrawRatioBranchPos,
@@ -462,7 +459,6 @@ public class TournamentPainter : MonoBehaviour
             {
                 stageColliders[y, x].baseBranchObject = SetLineRenderer
                 (
-                    canvasObject,
                     containerObject,
                     lineObject,
                     stageColliders[y, x].startDrawRatioBranchPos,
@@ -472,7 +468,6 @@ public class TournamentPainter : MonoBehaviour
 
                 stageColliders[y, x].baseJointObject = SetLineRenderer
                 (
-                    canvasObject,
                     containerObject,
                     lineObject,
                     stageColliders[y, x].startDrawRatioJointPos,
@@ -490,7 +485,6 @@ public class TournamentPainter : MonoBehaviour
 
     TournamentProvider.tournamentData SetEveryResultLineRenderer
     (
-        GameObject canvasObject,
         GameObject containerObject,
         GameObject lineObject,
         TournamentProvider.tournamentData tournamentData,
@@ -518,7 +512,6 @@ public class TournamentPainter : MonoBehaviour
 
                 stageColliders[y, x].resultBranchObject = SetLineRenderer
                 (
-                    canvasObject,
                     containerObject,
                     lineObject,
                     startBranchPos,
@@ -528,7 +521,6 @@ public class TournamentPainter : MonoBehaviour
 
                 stageColliders[y, x].resultJointObject = SetLineRenderer
                 (
-                    canvasObject,
                     containerObject,
                     lineObject,
                     startJointPos,
@@ -644,7 +636,6 @@ public class TournamentPainter : MonoBehaviour
 
     TournamentProvider.tournamentData SetEveryPlayerObject
     (
-        GameObject canvasObject,
         GameObject containerObject,
         GameObject playerObject,
         TournamentProvider.tournamentData tournamentData,
@@ -674,7 +665,6 @@ public class TournamentPainter : MonoBehaviour
 
             stageRoots[x].playerObject = SetPlayerObject
             (
-                canvasObject,
                 containerObject,
                 playerObject,
                 x,
@@ -731,7 +721,6 @@ public class TournamentPainter : MonoBehaviour
 
     GameObject SetLineRenderer
     (
-        GameObject canvasObject,
         GameObject containerObject,
         GameObject lineObject,
         Vector2 startPos,
@@ -752,7 +741,6 @@ public class TournamentPainter : MonoBehaviour
 
     GameObject SetPlayerObject
     (
-        GameObject canvasObject,
         GameObject containerObject,
         GameObject playerObject,
         int id,

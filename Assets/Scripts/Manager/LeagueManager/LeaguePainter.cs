@@ -19,7 +19,6 @@ public class LeaguePainter : MonoBehaviour
         LeagueProvider LeagueProvider
     )
     {
-        GameObject canvasObject = leagueContainerObjects.canvasObject;
         GameObject baseLineContainer = leagueContainerObjects.baseLineContainer;
         GameObject edgeLineContainer = leagueContainerObjects.edgeLineContainer;
         GameObject baseLineObject = leagueOriginalObjects.baseLineObject;
@@ -39,7 +38,6 @@ public class LeaguePainter : MonoBehaviour
 
         sub.stageGridPoses = SetTableGrid
         (
-            canvasObject,
             baseLineContainer,
             baseLineObject,
             edgeLineContainer,
@@ -53,7 +51,6 @@ public class LeaguePainter : MonoBehaviour
 
         SetLineRenderer
         (
-            canvasObject,
             edgeLineContainer,
             edgeLineObject,
             sub.stageGridPoses[0, 0].startPos,
@@ -63,7 +60,6 @@ public class LeaguePainter : MonoBehaviour
 
         sub.statisticGridPoses = SetTableGrid
         (
-            canvasObject,
             baseLineContainer,
             baseLineObject,
             edgeLineContainer,
@@ -100,7 +96,6 @@ public class LeaguePainter : MonoBehaviour
         LeagueProvider LeagueProvider
     )
     {
-        GameObject canvasObject = leagueContainerObjects.canvasObject;
         GameObject playerContainer = leagueContainerObjects.playerContainer;
         GameObject scoreContainer = leagueContainerObjects.scoreContainer;
         GameObject textContainer = leagueContainerObjects.scoreContainer;
@@ -122,9 +117,9 @@ public class LeaguePainter : MonoBehaviour
 
         float objectScale = sumPeople < criteriaScale ? (float)(criteriaScale * 2f - sumPeople) / criteriaScale : 1f;
 
-        sub = SetEveryPlayerObject(canvasObject, playerContainer, playerObject, leagueData, setColor ? 2 : 0, objectScale, screenSize, LeagueProvider);
-        sub = SetEveryScoreObject(canvasObject, scoreContainer, scoreObject, leagueData, objectScale, screenSize, LeagueProvider);
-        sub = SetEveryStatisticObject(canvasObject, textContainer, textObject, leagueData, screenSize);
+        sub = SetEveryPlayerObject(playerContainer, playerObject, leagueData, setColor ? 2 : 0, objectScale, screenSize, LeagueProvider);
+        sub = SetEveryScoreObject(scoreContainer, scoreObject, leagueData, objectScale, screenSize, LeagueProvider);
+        sub = SetEveryStatisticObject(textContainer, textObject, leagueData, screenSize);
 
         return sub;
     }
@@ -504,7 +499,6 @@ public class LeaguePainter : MonoBehaviour
 
     LeagueProvider.leagueData SetEveryPlayerObject
     (
-        GameObject canvasObject,
         GameObject containerObject,
         GameObject playerObject,
         LeagueProvider.leagueData leagueData,
@@ -537,7 +531,6 @@ public class LeaguePainter : MonoBehaviour
 
             stageRoots[i].playerObjects = SetPlayerObject
             (
-                canvasObject,
                 containerObject,
                 playerObject,
                 i,
@@ -557,7 +550,6 @@ public class LeaguePainter : MonoBehaviour
 
     LeagueProvider.leagueData SetEveryScoreObject
     (
-        GameObject canvasObject,
         GameObject containerObject,
         GameObject scoreObject,
         LeagueProvider.leagueData leagueData,
@@ -582,7 +574,6 @@ public class LeaguePainter : MonoBehaviour
 
                 stageTables[y, x].scoreObject = SetScoreObject
                 (
-                    canvasObject,
                     containerObject,
                     scoreObject,
                     y * sumPeople + x,
@@ -603,7 +594,6 @@ public class LeaguePainter : MonoBehaviour
 
     LeagueProvider.leagueData SetEveryStatisticObject
     (
-        GameObject canvasObject,
         GameObject containerObject,
         GameObject statisticObject,
         LeagueProvider.leagueData leagueData,
@@ -639,7 +629,6 @@ public class LeaguePainter : MonoBehaviour
 
             dummy[i] = SetStatisticObject
             (
-                canvasObject,
                 containerObject,
                 statisticObject,
                 text,
@@ -662,7 +651,6 @@ public class LeaguePainter : MonoBehaviour
 
             stageRoots[i].statisticObjects = SetStatisticObject
             (
-                canvasObject,
                 containerObject,
                 statisticObject,
                 stageRoots[i],
@@ -678,7 +666,6 @@ public class LeaguePainter : MonoBehaviour
 
     LeagueProvider.gridPos[,] SetTableGrid
     (
-        GameObject canvasObject,
         GameObject baseContainerObject,
         GameObject baseLineObject,
         GameObject edgeContainerObject,
@@ -721,7 +708,6 @@ public class LeaguePainter : MonoBehaviour
 
             SetLineRenderer
             (
-                canvasObject,
                 baseContainerObject,
                 baseLineObject,
                 newSetPosB + new Vector2(0f, posY),
@@ -733,7 +719,6 @@ public class LeaguePainter : MonoBehaviour
             {
                 SetLineRenderer
                 (
-                    canvasObject,
                     edgeContainerObject,
                     edgeLineObject,
                     newSetPosB + new Vector2(0f, posY),
@@ -749,7 +734,6 @@ public class LeaguePainter : MonoBehaviour
 
             SetLineRenderer
             (
-                canvasObject,
                 baseContainerObject,
                 baseLineObject,
                 newSetPosB + new Vector2(posX, 0f),
@@ -761,7 +745,6 @@ public class LeaguePainter : MonoBehaviour
             {
                 SetLineRenderer
                 (
-                    canvasObject,
                     edgeContainerObject,
                     edgeLineObject,
                     newSetPosB + new Vector2(posX, 0f),
@@ -776,7 +759,6 @@ public class LeaguePainter : MonoBehaviour
 
     void SetLineRenderer
     (
-        GameObject canvasObject,
         GameObject containerObject,
         GameObject lineObject,
         Vector2 startPos,
@@ -795,7 +777,6 @@ public class LeaguePainter : MonoBehaviour
 
     GameObject[] SetPlayerObject
     (
-        GameObject canvasObject,
         GameObject containerObject,
         GameObject playerObject,
         int id,
@@ -835,7 +816,6 @@ public class LeaguePainter : MonoBehaviour
 
     GameObject SetScoreObject
     (
-        GameObject canvasObject,
         GameObject containerObject,
         GameObject scoreObject,
         int id,
@@ -865,7 +845,6 @@ public class LeaguePainter : MonoBehaviour
 
     GameObject SetStatisticObject
     (
-        GameObject canvasObject,
         GameObject containerObject,
         GameObject statisticObject,
         string text,
@@ -886,7 +865,6 @@ public class LeaguePainter : MonoBehaviour
 
     GameObject[] SetStatisticObject
     (
-        GameObject canvasObject,
         GameObject containerObject,
         GameObject statisticObject,
         LeagueProvider.stageRoot stageRoot,

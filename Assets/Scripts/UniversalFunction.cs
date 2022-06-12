@@ -108,15 +108,6 @@ public class UniversalFunction : MonoBehaviour
         return Mathf.Floor(val / multiply) * multiply + (val >= 0f ? 0f : multiply);
     }
 
-    public static Vector2 MathfLerp(Vector2 valA, Vector2 valB, float time, bool clearZero)
-    {
-        return new Vector2
-        (
-            Mathf.Lerp(valA.x, valB.x, time),
-            Mathf.Lerp(valA.y, valB.y, time)
-        );
-    }
-
     public static Vector3 MathfLerp(Vector3 valA, Vector3 valB, float time)
     {
         return new Vector3
